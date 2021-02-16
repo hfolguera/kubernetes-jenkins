@@ -30,6 +30,10 @@ Modify configuration by editing jenkins-values.yaml file or use the existing one
 ### 8. Install Jenkins Chart
 `helm install jenkins -n jenkins -f jenkins-values.yaml jenkinsci/jenkins`
 
+## Next Steps
+1. Jenkins Configuration as Code (JCasC) examples
+2. Add relevant plugins
+
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts
 
