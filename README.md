@@ -32,4 +32,5 @@ Modify configuration by editing jenkins-values.yaml file or use the existing one
 
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts
+
 Official Jenkins k8s install guide: https://www.jenkins.io/doc/book/installing/kubernetes/
