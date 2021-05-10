@@ -28,7 +28,7 @@ Since we are using 3-node k8s cluster, we need to use local storage class instea
 Modify configuration by editing jenkins-values.yaml file or use the existing one. It is set to use metallb loadbalancer
 
 ### 8. Install Jenkins Chart
-`helm install jenkins -n jenkins -f jenkins-values.yaml jenkinsci/jenkins`
+`helm install jenkins -n jenkins -f jenkins-values.yml jenkinsci/jenkins`
 
 ## Next Steps
 1. Jenkins Configuration as Code (JCasC) examples

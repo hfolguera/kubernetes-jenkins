@@ -106,7 +106,7 @@ controller:
   # Use ClusterIP if your setup includes ingress controller
   serviceType: LoadBalancer
   # Jenkins controller service annotations
-  serviceAnnotations: {metallb.universe.tf/address-pool: default}
+  serviceAnnotations: {metallb.universe.tf/address-pool: jenkins-pool}
   # Jenkins controller custom labels
   statefulSetLabels: {}
   #   foo: bar
