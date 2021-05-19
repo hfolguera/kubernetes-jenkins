@@ -19,7 +19,7 @@ controller:
   # Used for label app.kubernetes.io/component
   componentName: "jenkins-controller"
   image: "jenkins/jenkins"
-  tag: "2.263.3"
+  tag: "2.277.4-jdk11"
   imagePullPolicy: "Always"
   imagePullSecretName:
   # Optionally configure lifetime for controller-container
@@ -66,15 +66,19 @@ controller:
       cpu: "2000m"
       memory: "4096Mi"
   # Environment variables that get added to the init container (useful for e.g. http_proxy)
-  # initContainerEnv:
-  #   - name: http_proxy
-  #     value: "http://192.168.64.1:3128"
+#  initContainerEnv:
+#    - name: JENKINS_UC
+#      value: "http://https://updates.jenkins.io/current/update-center.json"
   # containerEnv:
   #   - name: http_proxy
   #     value: "http://192.168.64.1:3128"
   # Set min/max heap here if needed with:
   # javaOpts: "-Xms512m -Xmx512m"
   # jenkinsOpts: ""
+  # If you are using the ingress definitions provided by this chart via the `controller.ingress` block the configured hostname will be the ingress hostname starting with `https://` or `http://` depending on the `tls` configuration.
+  # The Protocol can be overwritten by specifying `controller.jenkinsUrlProtocol`.
+  # jenkinsUrlProtocol: "https"
+  # If you are not using the provided ingress you can specify `controller.jenkinsUrl` to change the url definition.
   # jenkinsUrl: ""
   # If you set this prefix and use ingress controller then you might want to set the ingress path below
   # jenkinsUriPrefix: "/jenkins"
@@ -118,7 +122,6 @@ controller:
   podLabels: {}
   # Used to create Ingress record (should used with ServiceType: ClusterIP)
   # nodePort: <to set explicitly, choose port between 30000-32767
-  #nodePort: 32000
   # Enable Kubernetes Liveness and Readiness Probes
   # if Startup Probe is supported, enable it too
   # ~ 2 minutes to allow Jenkins to restart when upgrading plugins. Set ReadinessTimeout to be shorter than LivenessTimeout.
@@ -138,6 +141,9 @@ controller:
         port: http
       periodSeconds: 10
       timeoutSeconds: 5
+      # If Startup Probe is not supported on your Kubernetes cluster, you might want to use "initialDelaySeconds" instead.
+      # It delays the initial liveness probe while Jenkins is starting
+      # initialDelaySeconds: 60
     readinessProbe:
       failureThreshold: 3
       httpGet:
@@ -145,8 +151,14 @@ controller:
         port: http
       periodSeconds: 10
       timeoutSeconds: 5
+      # If Startup Probe is not supported on your Kubernetes cluster, you might want to use "initialDelaySeconds" instead.
+      # It delays the initial readyness probe while Jenkins is starting
+      # initialDelaySeconds: 60
+
+  agentListenerEnabled: true
   agentListenerPort: 50000
   agentListenerHostPort:
+  agentListenerNodePort:
   disabledAgentProtocols:
     - JNLP-connect
     - JNLP2-connect
@@ -192,10 +204,13 @@ controller:
 
   # List of plugins to be install during Jenkins controller start
   installPlugins:
-    - kubernetes:1.29.0
+    - kubernetes:1.29.4
     - workflow-aggregator:2.6
-    - git:4.5.2
-    - configuration-as-code:1.47
+    - git:4.7.1
+    - configuration-as-code:1.51
+
+  # Set to false to download the minimum required version of all dependencies.
+  installLatestPlugins: false
 
   # List of plugins to install in addition to those listed in controller.installPlugins
   additionalPlugins: []
@@ -222,6 +237,33 @@ controller:
   initScripts: []
   #  - |
   #    print 'adding global pipeline libraries, register properties, bootstrap jobs...'
+
+  # 'name' is a name of an existing secret in same namespace as jenkins,
+  # 'keyName' is the name of one of the keys inside current secret.
+  # the 'name' and 'keyName' are concatenated with a '-' in between, so for example:
+  # an existing secret "secret-credentials" and a key inside it named "github-password" should be used in Jcasc as ${secret-credentials-github-password}
+  # 'name' and 'keyName' must be lowercase RFC 1123 label must consist of lower case alphanumeric characters or '-',
+  # and must start and end with an alphanumeric character (e.g. 'my-name',  or '123-abc')
+  additionalExistingSecrets: []
+  #  - name: secret-name-1
+  #    keyName: username
+  #  - name: secret-name-1
+  #    keyName: password
+
+  additionalSecrets: []
+  #  - name: nameOfSecret
+  #    value: secretText
+
+  # Generate SecretClaim resources in order to create Kubernetes secrets from HashiCorp Vault using kube-vault-controller.
+  # 'name' is name of the secret that will be created in Kubernetes. The Jenkins fullname is prepended to this value.
+  # 'path' is the fully qualified path to the secret in Vault
+  # 'type' is an optional Kubernetes secret type. Defaults to 'Opaque'
+  # 'renew' is an optional secret renewal time in seconds
+  secretClaims: []
+  # - name: secretName        # required
+  #   path: testPath          # required
+  #   type: kubernetes.io/tls # optional
+  #   renew: 60               # optional
 
   # Below is the implementation of Jenkins Configuration as Code.  Add a key under configScripts for each configuration area,
   # where each corresponds to a plugin or section of the UI.  Each key (prior to | character) is just a label, and can be any value.
@@ -326,6 +368,10 @@ controller:
   podAnnotations: {}
   # Add StatefulSet annotations
   statefulSetAnnotations: {}
+
+  # StatefulSet updateStrategy
+  # ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+  updateStrategy: {}
 
   ingress:
     enabled: false
@@ -696,8 +742,10 @@ rbac:
 serviceAccount:
   create: true
   # The name of the service account is autogenerated by default
-  name: jenkins 
+  name: jenkins
   annotations: {}
+  imagePullSecretName:
+
 
 serviceAccountAgent:
   # Specifies whether a ServiceAccount should be created
@@ -706,6 +754,7 @@ serviceAccountAgent:
   # If not set and create is true, a name is generated using the fullname template
   name:
   annotations: {}
+  imagePullSecretName:
 
 ## Backup cronjob configuration
 ## Ref: https://github.com/maorfr/kube-tasks

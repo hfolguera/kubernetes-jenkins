@@ -5,22 +5,12 @@ metadata:
   namespace: jenkins
 spec:
   storageClassName: jenkins-pv
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
   capacity:
     storage: 20Gi
-  persistentVolumeReclaimPolicy: Retain
-  local:
-    path: /nfs/homelab/jenkins-volume/
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-            - cf-k8s-master
-            - cf-k8s-node1
-            - cf-k8s-node2
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  nfs:
+    server: 192.168.1.11
+    path: "/volume2/NFS/homelab/jenkins"
 

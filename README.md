@@ -14,21 +14,19 @@ helm repo update
 ### 3. Create a Namespace for Jenkins
 `kubectl create namespace jenkins`
 
-### 4. Mount NFS volume
-`mount.nfs 192.168.1.11:/volume2/NFS`
-
-### 5. Create Persistent Volume
+### 4. Create Persistent Volume
 `kubectl apply -f jenkins-volume.yaml`
-Since we are using 3-node k8s cluster, we need to use local storage class instead of hostPath.
 
-### 6. Create service Account
+Since we are using 3-node k8s cluster, we need to use a NFS storage class instead of hostPath.
+
+### 5. Create service Account
 `kubectl apply -f jenkins-sa.yaml`
 
-### 7. Define installation configuration
-Modify configuration by editing jenkins-values.yaml file or use the existing one. It is set to use metallb loadbalancer
+### 6. Define installation configuration
+Modify configuration by editing values.yaml file or use the existing one. It has been set to use metallb loadbalancer
 
-### 8. Install Jenkins Chart
-`helm install jenkins -n jenkins -f jenkins-values.yml jenkinsci/jenkins`
+### 7. Install Jenkins Chart
+`helm install jenkins -n jenkins -f values.yaml jenkinsci/jenkins`
 
 ## Next Steps
 1. Jenkins Configuration as Code (JCasC) examples
