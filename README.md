@@ -18,6 +18,7 @@ helm repo update
 `kubectl apply -f jenkins-volume.yaml`
 
 Since we are using 3-node k8s cluster, we need to use a NFS storage class instead of hostPath.
+
 `jenkins-volume.yaml` is set to use NFS volume. The directory must exist with jenkins owner as user and group (1000:1000). I have had to add Full Control to jenkins user over the directory in Synology directory properties.
 
 ### 5. Create service Account
