@@ -30,6 +30,18 @@ Modify configuration by editing values.yaml file or use the existing one. It has
 ### 7. Install Jenkins Chart
 `helm install jenkins -n jenkins -f values.yaml jenkinsci/jenkins`
 
+## Upgrade
+### 1. Update Helm Repo
+Execute the repo update to get the last version:
+`helm repo update`
+
+### 2. Verify your values.yaml file
+Make sure you have the latest version of the jenkins docker image on your `values.yaml` file. Search for the `tag` attribute and set it to your desired version or use latest.
+
+### 3. Execute the upgrade
+Since it is a Helm based installation, you have to execute the upgrade process with:
+`helm upgrade -f values.yaml jenkins jenkinsci/jenkins -n jenkins`
+
 ## Next Steps
 1. Jenkins Configuration as Code (JCasC) examples
 2. Add relevant plugins
