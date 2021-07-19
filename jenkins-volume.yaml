@@ -12,5 +12,5 @@ spec:
   persistentVolumeReclaimPolicy: Recycle
   nfs:
     server: 192.168.1.11
-    path: "/volume2/NFS/homelab/jenkins"
+    path: "/volume2/NFS/homelab/jenkins-volume"
 
