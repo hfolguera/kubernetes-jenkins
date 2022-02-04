@@ -104,7 +104,7 @@ controller:
   #   runAsNonRoot: true
   #   supplementalGroups: [1000]
   #   # capabilities: {}
-  servicePort: 8080
+  servicePort: 80
   targetPort: 8080
   # For minikube, set this to NodePort, elsewhere use LoadBalancer
   # Use ClusterIP if your setup includes ingress controller
@@ -208,6 +208,10 @@ controller:
     - workflow-aggregator:2.6
     - git:4.7.1
     - configuration-as-code:1.51
+    - ansible:1.1
+    - ansible-tower:0.16.0
+    - ansicolor:1.0.1
+    - terraform:1.0.10
 
   # Set to false to download the minimum required version of all dependencies.
   installLatestPlugins: false
