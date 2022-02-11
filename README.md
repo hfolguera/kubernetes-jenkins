@@ -58,7 +58,6 @@ helm upgrade -f values.yaml jenkins jenkinsci/jenkins -n jenkins
 
 ## Next Steps
 1. Jenkins Configuration as Code (JCasC) examples
-2. Add relevant plugins
 
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts
