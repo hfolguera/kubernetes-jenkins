@@ -40,7 +40,7 @@ kubectl apply -f jenkins-service.yaml
 
 ### 8. Obtain the initial password
 ```
-kubectl exec -it jenkins-559d8cd85c-cfcgk cat /var/jenkins_home/secrets/initialAdminPassword -n jenkins
+kubectl exec -it jenkins-559d8cd85c-cfcgk -n jenkins -- cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
 ## Post Installation Steps
@@ -58,12 +58,15 @@ Select the following plugins to install:
 - Ansicolor
 - Terraform
 - Thinbackup
+- Prometheus
 
 ### Configure Kubernetes cloud
 Create a Kubernetes cloud to deploy build agents
 
 ## Next Steps
 1. Jenkins Configuration as Code (JCasC)
+1. Configure kubernetes cluster & agents
+1. Auto-update plugins, is it possible?
 
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts

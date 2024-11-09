@@ -5,6 +5,7 @@ metadata:
   namespace: jenkins
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: jenkins-server
@@ -32,6 +33,9 @@ spec:
               containerPort: 8080
             - name: jnlpport
               containerPort: 50000
+          env:
+            - name: CASC_JENKINS_CONFIG
+              value: /var/jenkins_home/
           livenessProbe:
             httpGet:
               path: "/login"
@@ -51,7 +55,13 @@ spec:
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
+            - name: jenkins-casc
+              mountPath: /var/jenkins_home/config.yaml
+              readOnly: true
       volumes:
         - name: jenkins-data
           persistentVolumeClaim:
               claimName: jenkins-pv-claim
+        - name: jenkins-casc
+          configMap:
+            name: jenkins-configuration-as-code
