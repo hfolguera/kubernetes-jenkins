@@ -10,10 +10,11 @@ data:
 
       clouds:
       - kubernetes:
-          jenkinsUrl: "http://jenkins-agent.jenkins.svc.calfolguera.com:5000"
           name: "kubernetes"
           namespace: "jenkins"
           serverUrl: "https://192.168.1.7:6443"
+          jenkinsUrl: "http://jenkins-service.jenkins.svc.calfolguera.com:8080"
+          jenkinsTunnel: "jenkins-service.jenkins.svc.calfolguera.com:50000"
           skipTlsVerify: true
           templates:
           - agentInjection: true
@@ -27,7 +28,7 @@ data:
                 timeoutSeconds: 0
               name: "jnlp"
               workingDir: "/home/jenkins/agent"
-            label: "agent"
+            label: "k8s-agent"
             name: "default-agent"
             namespace: "jenkins"
 
