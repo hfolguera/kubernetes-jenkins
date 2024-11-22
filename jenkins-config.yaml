@@ -31,6 +31,24 @@ data:
             label: "k8s-agent"
             name: "default-agent"
             namespace: "jenkins"
+          - agentContainer: "terraform-agent"
+            agentInjection: true
+            containers:
+            - args: "cat"
+              command: "/bin/sh -c"
+              image: "jenkins/jnlp-agent-terraform"
+              livenessProbe:
+                failureThreshold: 0
+                initialDelaySeconds: 0
+                periodSeconds: 0
+                successThreshold: 0
+                timeoutSeconds: 0
+              name: "terraform-agent"
+              ttyEnabled: true
+              workingDir: "/home/jenkins/agent"
+            label: "terraform"
+            name: "terraform-agent"
+            namespace: "jenkins"
 
     unclassified:
       scmGit:
