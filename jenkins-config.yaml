@@ -42,6 +42,29 @@ data:
               workingDir: "/home/jenkins/agent"
               command: "/bin/sh -c"
               args: "cat"
+
+      securityRealm:
+        oic:
+          clientId: "UjajXtqz864vBMwxYZckj296pYVBjTqbBwtTqTGF"
+          clientSecret: "{AQAAABAAAACQeAl+3F4RvAGppCIIDzFPWfs0EVZ0kpLxrRaQMy2Fl243eX3wQ8+lfcFxuMcvezC3NNEvBiZkqU31mP/VsyxQvvOFawU5ouP/3vQyPRu5yWQN06UZdBfCREsWa4hE8FifgI3/UccrU1InO+TITxJaFn4wSp7HOSfNhDV7wKb2A7Gkb03KF5oFVSTW4iVORc2bJKk0oO/f2JlQyYOxU4nsyQ==}"
+          disableSslVerification: false
+          emailFieldName: "email"
+          fullNameFieldName: "name"
+          groupIdStrategy: "caseSensitive"
+          groupsFieldName: "groups"
+          logoutFromOpenidProvider: false
+          properties:
+          - "pkce"
+          - escapeHatch:
+              secret: "{AQAAABAAAABAxZSIKeIBEqV24OpUYitoAFV3bT00g7bMmnmO6lCZ/KDGb3OFHZ8cT25gy6xJnbGq3muGQAGHcG6PtkgpXBr+dpoRzC9Nt4aeTFGwG+Bglu0=}"
+              username: "admin"
+          serverConfiguration:
+            wellKnown:
+              scopesOverride: "openid profile email"
+              wellKnownOpenIDConfigurationUrl: "https://authentik.calfolguera.freemyip.com/application/o/jenkins/.well-known/openid-configuration"
+          userIdStrategy: "caseSensitive"
+          userNameField: "preferred_username"
+
     unclassified:
       scmGit:
         globalConfigEmail: "hfolguera@gmail.com"

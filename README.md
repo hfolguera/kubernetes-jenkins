@@ -51,6 +51,7 @@ Select the following plugins to install:
 - Thinbackup
 - Prometheus
 - CloudBees Disk Usage Simple
+- OpenID Connect Authentication Plugin
 
 ## Next Steps
 1. Auto-update plugins, is it possible?
