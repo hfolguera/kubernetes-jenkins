@@ -57,6 +57,15 @@ Select the following plugins to install:
 1. Auto-update plugins, is it possible?
 1. Set Timezone
 
+## Restore
+To restore a previous backup...
+1. Install the thinBackup plugin
+2. Configure the plugin: XXXXX
+3. Unzip the latest backup: `tar -xzvf <BACKUP FOLDER>/jenkins_backup_<DATE>.tar.gz`
+4. Copy the latest backup to container: `kubectl cp <BACKUP FOLDER>/FULL_<DATE> <JENKINS_POD>:/var/jenkins_home/backups`
+5. Restore the backup: XXX
+6. Restart Jenkins
+
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts
 
