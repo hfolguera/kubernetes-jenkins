@@ -38,7 +38,7 @@ kubectl exec -it jenkins-****** -n jenkins -- cat /var/jenkins_home/secrets/init
 ### Install plugins
 Select the following plugins to install:
 - Folders
-- Configuration as Code
+- Configuration as Code --> This causes issues with SSO Federation
 - Github
 - Ansible
 - Ansible Tower
@@ -65,6 +65,13 @@ To restore a previous backup...
 4. Copy the latest backup to container: `kubectl cp <BACKUP FOLDER>/FULL_<DATE> <JENKINS_POD>:/var/jenkins_home/backups`
 5. Restore the backup: XXX
 6. Restart Jenkins
+
+## Troubleshooting
+
+### password cannot be more than 72 bytes
+If using Configuration as Code plugin and having SSO federation set, it will throw "java.lang.IllegalArgumentException: password cannot be more than 72 bytes" message.
+No workaround found until now...remove federation configuration from CasC configmap executing:
+`kubectl apply -f jenkins-config.yaml`
 
 ## References
 Official Chart repo: https://github.com/jenkinsci/helm-charts
